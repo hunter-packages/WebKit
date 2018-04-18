@@ -10,6 +10,12 @@
 
 cmake_minimum_required(VERSION 3.3)
 
+include("cmake/HunterGate.cmake")
+HunterGate(
+    URL "https://github.com/ruslo/hunter/archive/v0.20.46.tar.gz"
+    SHA1 "62f6c01e51dbd15ae46e85c23413e74da88b6a3b"
+)
+
 project(WebKit)
 
 if (NOT CMAKE_BUILD_TYPE)
