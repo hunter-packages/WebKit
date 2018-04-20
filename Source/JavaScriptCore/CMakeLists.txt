@@ -1192,7 +1192,11 @@ target_include_directories(LLIntOffsetsExtractor PRIVATE
 )
 target_include_directories(LLIntOffsetsExtractor SYSTEM PRIVATE ${JavaScriptCore_SYSTEM_INCLUDE_DIRECTORIES})
 
+if(WEBKIT_BUILD_JSC)
+
 add_subdirectory(shell)
+
+endif()
 
 WEBKIT_COMPUTE_SOURCES(JavaScriptCore)
 WEBKIT_WRAP_SOURCELIST(${JavaScriptCore_SOURCES})

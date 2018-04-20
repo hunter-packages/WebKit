@@ -19,6 +19,7 @@ HunterGate(
 project(WebKit)
 
 option(WEBKIT_BUILD_PERFORMACE_TESTS "Build performance tests" OFF)
+option(WEBKIT_BUILD_JSC "Build jsc executable" OFF)
 
 ### Installation (https://github.com/forexample/package-example) {
 
