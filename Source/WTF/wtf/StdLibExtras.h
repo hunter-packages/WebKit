@@ -543,7 +543,7 @@ template<class B0, class B1, class B2, class... Bn> struct wtf_conjunction_impl<
 template<class... _Args> struct conjunction : wtf_conjunction_impl<_Args...> { };
 #endif
 
-#if __cplusplus < 201703L
+#if __cplusplus < 201703L && (!defined(_MSVC_LANG) || _MSVC_LANG < 201703L)
 
 // These are inline variable for C++17 and later.
 #define __IN_PLACE_INLINE_VARIABLE static const
