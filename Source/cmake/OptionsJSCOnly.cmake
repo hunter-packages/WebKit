@@ -39,7 +39,7 @@ set(ENABLE_WEBKIT OFF)
 if (WIN32)
     set(ENABLE_API_TESTS OFF)
 else ()
-    set(ENABLE_API_TESTS ON)
+    set(ENABLE_API_TESTS OFF)
 endif ()
 
 if (WTF_CPU_X86 OR WTF_CPU_X86_64)
