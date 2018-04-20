@@ -30,6 +30,28 @@ if (WIN32)
     )
 elseif (APPLE)
     file(COPY mac/MachExceptions.defs DESTINATION ${DERIVED_SOURCES_WTF_DIR})
+    if(IOS)
+      # Get host sysroot
+      execute_process(
+          COMMAND xcrun --show-sdk-path
+          RESULT_VARIABLE result
+          OUTPUT_VARIABLE host_sysroot
+          ERROR_VARIABLE host_sysroot
+          OUTPUT_STRIP_TRAILING_WHITESPACE
+          ERROR_STRIP_TRAILING_WHITESPACE
+      )
+      if(NOT result EQUAL "0")
+        message(FATAL_ERROR "xcrun failed: ${result} ${host_sysroot}")
+      endif()
+
+      if(NOT EXISTS ${host_sysroot})
+        message(FATAL_ERROR "Directory not found: ${host_sysroot}")
+      endif()
+
+      set(sysroot_arg "-isysroot" ${host_sysroot})
+    else()
+      set(sysroot_arg "")
+    endif()
     add_custom_command(
         OUTPUT
             ${DERIVED_SOURCES_WTF_DIR}/MachExceptionsServer.h
@@ -38,7 +60,7 @@ elseif (APPLE)
             ${DERIVED_SOURCES_WTF_DIR}/mach_excUser.c
         MAIN_DEPENDENCY mac/MachExceptions.defs
         WORKING_DIRECTORY ${DERIVED_SOURCES_WTF_DIR}
-        COMMAND mig -sheader MachExceptionsServer.h MachExceptions.defs
+        COMMAND mig ${sysroot_arg} -sheader MachExceptionsServer.h MachExceptions.defs
         VERBATIM)
     list(APPEND WTF_SOURCES
         cocoa/MemoryFootprintCocoa.cpp
