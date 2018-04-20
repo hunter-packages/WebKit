@@ -124,6 +124,28 @@ private:
         BranchKind kind;
         unsigned index;
     };
+
+    class URBG {
+    public:
+        typedef unsigned result_type;
+
+        explicit URBG(WeakRandom& weakRandom, result_type max_value)
+            : m_weakRandom(weakRandom)
+            , m_max(max_value)
+        {
+        }
+
+        result_type operator() () {
+            return m_weakRandom.getUint32() % m_max;
+        }
+
+        static result_type min() { return 0; }
+        static result_type max() { return std::numeric_limits<result_type>::max(); }
+
+    private:
+        WeakRandom& m_weakRandom;
+        const result_type m_max;
+    };
     
     WeakRandom m_weakRandom;
     
