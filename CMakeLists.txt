@@ -18,6 +18,8 @@ HunterGate(
 
 project(WebKit)
 
+option(WEBKIT_BUILD_PERFORMACE_TESTS "Build performance tests" OFF)
+
 ### Installation (https://github.com/forexample/package-example) {
 
 # Introduce variables:
@@ -214,6 +216,8 @@ if (ENABLE_TOOLS)
     add_subdirectory(Tools)
 endif ()
 
+if(WEBKIT_BUILD_PERFORMACE_TESTS)
+
 if ("${PORT}" STREQUAL "GTK" OR "${PORT}" STREQUAL "WPE")
     if (DEVELOPER_MODE)
         add_subdirectory(PerformanceTests)
@@ -221,6 +225,8 @@ if ("${PORT}" STREQUAL "GTK" OR "${PORT}" STREQUAL "WPE")
 else ()
     add_subdirectory(PerformanceTests)
 endif ()
+
+endif()
 
 # -----------------------------------------------------------------------------
 # Print the features list last, for maximum visibility.
