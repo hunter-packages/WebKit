@@ -167,9 +167,13 @@ static inline double currentTime()
     double highResTime = highResUpTime();
 
     if (!syncedTime) {
+#if !defined(WEBKIT_WINDOWS_STORE)
         timeBeginPeriod(1); // increase time resolution around low-res time getter
+#endif
         syncLowResUTCTime = lowResTime = lowResUTCTime();
+#if !defined(WEBKIT_WINDOWS_STORE)
         timeEndPeriod(1); // restore time resolution
+#endif
         syncHighResUpTime = highResTime;
         syncedTime = true;
     }
