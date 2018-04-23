@@ -38,7 +38,14 @@ static Lock platformLanguageMutex;
 
 static String localeInfo(LCTYPE localeType, const String& fallback)
 {
+#if defined(WEBKIT_WINDOWS_STORE)
+    // langID name of the variable is misleading (is it a error?), kept for compatibility
+    // with old code. GetLocaleInfo expects variable of type LCID as first argument:
+    // * https://msdn.microsoft.com/en-us/library/windows/desktop/dd318101(v=vs.85).aspx
+    LCID langID = LOCALE_CUSTOM_UI_DEFAULT;
+#else
     LANGID langID = GetUserDefaultUILanguage();
+#endif
     int localeChars = GetLocaleInfo(langID, localeType, 0, 0);
     if (!localeChars)
         return fallback;
