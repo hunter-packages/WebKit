@@ -2,7 +2,7 @@
 # https://msdn.microsoft.com/en-us/library/6sehtctf.aspx
 #
 # Currently set to Windows 7
-add_definitions(-D_WINDOWS -DWINVER=0x601 -D_WIN32_WINNT=0x601)
+# add_definitions(-D_WINDOWS -DWINVER=0x601 -D_WIN32_WINNT=0x601)
 
 add_definitions(-DNOMINMAX)
 add_definitions(-DUNICODE -D_UNICODE)
