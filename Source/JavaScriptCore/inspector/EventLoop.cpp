@@ -44,6 +44,11 @@ CFStringRef EventLoop::remoteInspectorRunLoopMode()
 void EventLoop::cycle()
 {
 #if OS(WINDOWS)
+# if defined(WEBKIT_WINDOWS_STORE)
+    const DWORD sleepMs = 50;
+    const BOOL alertable = TRUE;
+    SleepEx(sleepMs, alertable);
+# else
     MSG msg;
     if (!GetMessage(&msg, 0, 0, 0)) {
         m_ended = true;
@@ -51,6 +56,7 @@ void EventLoop::cycle()
     }
     TranslateMessage(&msg);
     DispatchMessage(&msg);
+# endif
 #elif PLATFORM(WATCHOS)
     // FIXME: <rdar://problem/25972777>. In order for auto-attach to work, we need to
     // run in the default run loop mode otherwise we do not receive the XPC messages
