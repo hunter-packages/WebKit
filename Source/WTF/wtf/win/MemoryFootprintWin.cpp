@@ -37,6 +37,9 @@ namespace WTF {
 
 std::optional<size_t> memoryFootprint()
 {
+#if defined(WEBKIT_WINDOWS_STORE)
+    return std::nullopt;
+#else
     // We would like to calculate size of private working set.
     // https://msdn.microsoft.com/en-us/library/windows/desktop/ms684891(v=vs.85).aspx
     // > The working set of a program is a collection of those pages in its virtual address
@@ -84,6 +87,7 @@ std::optional<size_t> memoryFootprint()
             return std::nullopt;
         numberOfEntries = updateNumberOfEntries(workingSets->NumberOfEntries);
     }
+#endif
 }
 
 }
