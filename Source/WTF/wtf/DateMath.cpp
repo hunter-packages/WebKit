@@ -371,7 +371,9 @@ static callGetTimeZoneInformationForYear_t timeZoneInformationForYearFunction()
 
     if (getTimeZoneInformationForYear)
         return getTimeZoneInformationForYear;
-
+#if defined(WEBKIT_WINDOWS_STORE)
+    return nullptr;
+#else
     HMODULE module = ::GetModuleHandleW(L"kernel32.dll");
     if (!module)
         return nullptr;
@@ -379,6 +381,7 @@ static callGetTimeZoneInformationForYear_t timeZoneInformationForYearFunction()
     getTimeZoneInformationForYear = reinterpret_cast<callGetTimeZoneInformationForYear_t>(::GetProcAddress(module, "GetTimeZoneInformationForYear"));
 
     return getTimeZoneInformationForYear;
+#endif
 }
 #endif
 
