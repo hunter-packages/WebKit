@@ -188,9 +188,12 @@ static bool enableAssembler(ExecutableAllocator& executableAllocator)
             CRASH();
         return false;
     }
-
+#if defined(WEBKIT_WINDOWS_STORE)
+    return true;
+#else
     char* canUseJITString = getenv("JavaScriptCoreUseJIT");
     return !canUseJITString || atoi(canUseJITString);
+#endif
 }
 #endif // ENABLE(!ASSEMBLER)
 
@@ -439,9 +442,11 @@ VM::VM(VMType vmType, HeapType heapType)
         m_perBytecodeProfiler = std::make_unique<Profiler::Database>(*this);
 
         StringPrintStream pathOut;
+#if !defined(WEBKIT_WINDOWS_STORE)
         const char* profilerPath = getenv("JSC_PROFILER_PATH");
         if (profilerPath)
             pathOut.print(profilerPath, "/");
+#endif
         pathOut.print("JSCProfile-", getCurrentProcessID(), "-", m_perBytecodeProfiler->databaseID(), ".json");
         m_perBytecodeProfiler->registerToSaveAtExit(pathOut.toCString().data());
     }

@@ -49,7 +49,8 @@ int numberOfProcessorCores()
 
     if (s_numberOfCores > 0)
         return s_numberOfCores;
-    
+
+#if !defined(WEBKIT_WINDOWS_STORE)
     if (const char* coresEnv = getenv("WTF_numberOfProcessorCores")) {
         unsigned numberOfCores;
         if (sscanf(coresEnv, "%u", &numberOfCores) == 1) {
@@ -58,6 +59,7 @@ int numberOfProcessorCores()
         } else
             fprintf(stderr, "WARNING: failed to parse WTF_numberOfProcessorCores=%s\n", coresEnv);
     }
+#endif
 
 #if OS(DARWIN)
     unsigned result;

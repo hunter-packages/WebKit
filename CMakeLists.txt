@@ -120,6 +120,11 @@ if (MSVC AND COMPILER_IS_CLANG)
     set(COMPILER_IS_CLANG_CL ON)
 endif ()
 
+string(COMPARE EQUAL "${CMAKE_SYSTEM_NAME}" "WindowsStore" is_windows_store)
+if(is_windows_store)
+  add_definitions(-DWEBKIT_WINDOWS_STORE)
+endif()
+
 # -----------------------------------------------------------------------------
 # Determine the target processor
 # -----------------------------------------------------------------------------

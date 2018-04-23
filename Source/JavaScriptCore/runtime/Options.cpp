@@ -164,6 +164,9 @@ bool Options::isAvailable(Options::ID id, Options::Availability availability)
 template<typename T>
 bool overrideOptionWithHeuristic(T& variable, Options::ID id, const char* name, Options::Availability availability)
 {
+#if defined(WEBKIT_WINDOWS_STORE)
+    return false;
+#else
     bool available = (availability == Options::Availability::Normal)
         || Options::isAvailable(id, availability);
 
@@ -176,10 +179,14 @@ bool overrideOptionWithHeuristic(T& variable, Options::ID id, const char* name, 
     
     fprintf(stderr, "WARNING: failed to parse %s=%s\n", name, stringValue);
     return false;
+#endif
 }
 
 bool Options::overrideAliasedOptionWithHeuristic(const char* name)
 {
+#if defined(WEBKIT_WINDOWS_STORE)
+    return false;
+#else
     const char* stringValue = getenv(name);
     if (!stringValue)
         return false;
@@ -191,6 +198,7 @@ bool Options::overrideAliasedOptionWithHeuristic(const char* name)
 
     fprintf(stderr, "WARNING: failed to parse %s=%s\n", name, stringValue);
     return false;
+#endif
 }
 
 static unsigned computeNumberOfWorkerThreads(int maxNumberOfWorkerThreads, int minimum = 1)
