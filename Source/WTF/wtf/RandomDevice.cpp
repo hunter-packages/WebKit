@@ -100,12 +100,22 @@ void RandomDevice::cryptographicallyRandomValues(unsigned char* buffer, size_t l
 #elif OS(WINDOWS)
     // FIXME: We cannot ensure that Cryptographic Service Provider context and CryptGenRandom are safe across threads.
     // If it is safe, we can acquire context per RandomDevice.
+# if defined(WEBKIT_WINDOWS_STORE)
+    BCRYPT_ALG_HANDLE algorithm = 0;
+    if (!BCryptOpenAlgorithmProvider(&algorithm, BCRYPT_RNG_ALGORITHM, NULL, 0))
+        CRASH();
+    if (!BCryptGenRandom(algorithm, buffer, length, 0))
+        CRASH();
+    if (!BCryptCloseAlgorithmProvider(algorithm, 0))
+        CRASH();
+# else
     HCRYPTPROV hCryptProv = 0;
     if (!CryptAcquireContext(&hCryptProv, 0, MS_DEF_PROV, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT))
         CRASH();
     if (!CryptGenRandom(hCryptProv, length, buffer))
         CRASH();
     CryptReleaseContext(hCryptProv, 0);
+# endif
 #else
 #error "This configuration doesn't have a strong source of randomness."
 // WARNING: When adding new sources of OS randomness, the randomness must

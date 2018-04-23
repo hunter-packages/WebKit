@@ -497,6 +497,11 @@ if (WIN32)
     list(APPEND WTF_LIBRARIES
         winmm
     )
+
+    string(COMPARE EQUAL "${CMAKE_SYSTEM_NAME}" "WindowsStore" is_windows_store)
+    if(is_windows_store)
+      list(APPEND WTF_LIBRARIES Bcrypt.lib)
+    endif()
 else ()
     list(APPEND WTF_SOURCES
         OSAllocatorPosix.cpp
